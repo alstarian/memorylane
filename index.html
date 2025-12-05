@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Friends Memory Lane</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #050816;
+      color: #f5f5f5;
+    }
+
+    header {
+      padding: 24px 16px 12px;
+      text-align: center;
+      background: linear-gradient(135deg, #111827, #020617);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0 0 4px;
+      font-size: 1.8rem;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #94a3b8;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px 16px 40px;
+    }
+
+    .year-label {
+      margin: 32px 0 12px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #60a5fa;
+    }
+
+    .entry {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 14px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.18), transparent 55%),
+                  #020617;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.95);
+    }
+
+    .entry-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .entry-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .entry-text {
+      font-size: 0.9rem;
+      color: #e5e7eb;
+    }
+
+    .entry img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      max-height: 340px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: #9ca3af;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 16px 32px;
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+
+    @media (min-width: 640px) {
+      header h1 { font-size: 2.2rem; }
+      main { padding-top: 24px; }
+      .entry { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Friends Memory Lane</h1>
+    <p>Scroll down to travel back through our favorite moments together.</p>
+  </header>
+
+  <main>
+    <!-- Newest memories at the top -->
+    <div class="year-label">2025</div>
+
+    <article class="entry">
+      <div class="entry-meta">
+        <span>March 2025 · City Rooftop</span>
+        <span>Most recent</span>
+      </div>
+      <div class="entry-title">“We actually made it.”</div>
+      <p class="entry-text">
+        First time everyone was in the same city again, laughing way too loud and pretending we’re adults.
+      </p>
+      <img src="photos/2025-hanging-out.jpg" alt="Friends hanging out on a rooftop at night">
+      <div class="chips">
+        <span class="chip">Night out</span>
+        <span class="chip">Inside jokes</span>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div class="entry-meta">
+        <span>January 2025 · Coffee Spot</span>
+        <span>New year</span>
+      </div>
+      <div class="entry-title">New year, same chaos</div>
+      <p class="entry-text">
+        Kicked off the year exactly how we always do: late, loud, and with way too much caffeine.
+      </p>
+      <img src="photos/2025-coffee.jpg" alt="Friends sitting around a coffee shop table">
+      <div class="chips">
+        <span class="chip">Coffee</span>
+        <span class="chip">Catch-up</span>
+      </div>
+    </article>
+
+    <div class="year-label">2023</div>
+
+    <article class="entry">
+      <div class="entry-meta">
+        <span>May 2023 · Graduation</span>
+        <span>Big milestone</span>
+      </div>
+      <div class="entry-title">Caps in the air</div>
+      <p class="entry-text">
+        The day we pretended to be serious for photos and then went right back to being ourselves.
+      </p>
+      <img src="photos/2023-graduation.jpg" alt="Graduation photo with friends in caps and gowns">
+      <div class="chips">
+        <span class="chip">Graduation</span>
+        <span class="chip">Milestone</span>
+      </div>
+    </article>
+
+    <div class="year-label">2019</div>
+
+    <article class="entry">
+      <div class="entry-meta">
+        <span>September 2019 · First Day</span>
+        <span>Throwback</span>
+      </div>
+      <div class="entry-title">Day one</div>
+      <p class="entry-text">
+        None of us knew what we were doing, but somehow we all sat at the same table and never really left.
+      </p>
+      <img src="photos/2019-first-day.jpg" alt="Old photo of friends on the first day of school">
+      <div class="chips">
+        <span class="chip">Day one</span>
+        <span class="chip">Core memory</span>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    Built with HTML &amp; CSS · Hosted on GitHub Pages
+  </footer>
+</body>
+</html>

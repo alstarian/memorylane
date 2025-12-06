@@ -227,6 +227,11 @@
       background: #0f172a;
     }
 
+    /* FIX FOR SECOND IMAGE ONLY */
+    .fix-crop {
+      object-position: top 25% center !important;
+    }
+
     .film-meta {
       padding: 14px 16px 16px;
       background: linear-gradient(180deg, rgba(17,24,39,0.95) 0%, var(--film) 100%);
@@ -330,7 +335,7 @@
         <div class="sprockets right"></div>
         
         <div class="film-strip">
-          <!-- FRAME 1 · Lullaby Horse (newest) -->
+          <!-- FRAME 1 · Lullaby Horse (newest) - UNCHANGED -->
           <div class="film-frame">
             <article class="film-card">
               <div class="film-perf"></div>
@@ -356,14 +361,14 @@
             </article>
           </div>
 
-          <!-- FRAME 2 · IMG_5912.jpeg -->
+          <!-- FRAME 2 · IMG_5912.jpeg - FIXED CROPPING -->
           <div class="film-frame">
             <article class="film-card">
               <div class="film-perf"></div>
               <img
                 src="photos/IMG_5912.jpeg"
                 alt="IMG_5912"
-                class="film-image"
+                class="film-image fix-crop"
               >
               <div class="film-meta">
                 <div class="meta-bar">

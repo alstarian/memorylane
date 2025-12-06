@@ -219,21 +219,20 @@
     }
 
     .film-image {
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      background: #0f172a;
-    }
-
-
-
-    .fix-image-size {
-  width: 120% !important;      /* Makes image narrower inside frame */
-  height: 260px !important;   /* Makes image shorter inside frame */
-  margin: 10px auto;          /* Centers it inside frame */
+  width: 100%;
+  height: 280px;
+  object-fit: cover;       /* fill frame, keep aspect ratio [web:115] */
+  object-position: center; /* default centering */
+  display: block;
 }
+
+/* special rule JUST for the second image */
+.film-image.second {
+  height: 100%;            /* let it fill the whole frame vertically */
+}
+
+
+
 
 
     /* FIX FOR SECOND IMAGE ONLY */
@@ -377,7 +376,7 @@
               <img
                 src="photos/IMG_5912.jpeg"
                 alt="IMG_5912"
-                class="film-image fix-crop fix-image-size"
+                class="film-image second"
               >
               <div class="film-meta">
                 <div class="meta-bar">

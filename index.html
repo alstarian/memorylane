@@ -235,6 +235,13 @@
   max-width: 320px !important;  /* Narrower than 380px */
 }
 
+    .fix-image-size {
+  width: 90% !important;      /* Makes image narrower inside frame */
+  height: 260px !important;   /* Makes image shorter inside frame */
+  margin: 10px auto;          /* Centers it inside frame */
+}
+
+
     /* FIX FOR SECOND IMAGE ONLY */
     .fix-crop {
       object-position: top 25% center !important;
@@ -376,7 +383,7 @@
               <img
                 src="photos/IMG_5912.jpeg"
                 alt="IMG_5912"
-                class="film-image fix-crop fix-height fix-width"
+                class="film-image fix-crop fix-image-size"
               >
               <div class="film-meta">
                 <div class="meta-bar">

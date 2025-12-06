@@ -227,9 +227,11 @@
       background: #0f172a;
     }
 
-    /* Crop tweak only for second image (pull a bit upward if needed) */
+    /* Fine-tune crop + scale for IMG_5912.jpeg */
     .fix-crop {
-      object-position: center 20%;
+      object-position: center 18%;
+      transform: scale(1.06);
+      transform-origin: center center;
     }
 
     .film-meta {

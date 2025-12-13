@@ -1,402 +1,603 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Memory Lane - alstarian</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>Match Lab: FLAMES & Vedic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #020617;
-      --card: #111827;
-      --border: rgba(148, 163, 184, 0.4);
-      --accent: #38bdf8;
-      --film: #1e293b;
-      --sprocket: #0f172a;
+      --bg: #050816;
+      --card: #0f172a;
+      --accent: #f97316;
+      --accent-soft: rgba(249,115,22,0.15);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #f87171;
+      --radius: 14px;
+      --shadow-soft: 0 18px 40px rgba(15,23,42,0.7);
+      --border-subtle: 1px solid rgba(148,163,184,0.25);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #0f172a, #020617 65%);
-      color: #e5e7eb;
-      overflow-x: hidden;
-    }
-
-    header {
-      padding: 32px 16px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 2.1rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #38bdf8, #ec4899);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    header p {
-      margin: 0;
-      font-size: 0.95rem;
-      color: #9ca3af;
-      letter-spacing: 0.02em;
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 0 auto 60px;
-      padding: 0 12px 32px;
-    }
-
-    .projector {
-      margin-top: 28px;
-      padding: 24px 16px 28px;
-      border-radius: 28px;
       background:
-        linear-gradient(135deg, rgba(56, 189, 248, 0.18), transparent),
-        linear-gradient(315deg, rgba(236, 72, 153, 0.18), transparent),
-        #020617;
-      box-shadow:
-        0 25px 60px rgba(15, 23, 42, 0.95),
-        inset 0 1px 0 rgba(255,255,255,0.05);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .projector::before {
-      content: "";
-      position: absolute;
-      inset: 12px;
-      border-radius: 24px;
-      border: 2px solid rgba(15, 23, 42, 0.95);
-      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.2);
-      pointer-events: none;
-    }
-
-    .projector::after {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border-radius: 20px;
-      border: 1px dashed rgba(148, 163, 184, 0.3);
-      pointer-events: none;
-    }
-
-    .reel-label {
-      position: absolute;
-      top: 16px;
-      left: 24px;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: #6b7280;
-      font-weight: 500;
-    }
-
-    .reel-hint {
-      position: absolute;
-      top: 16px;
-      right: 24px;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: #9ca3af;
+        radial-gradient(circle at 0% 0%, #1f2937 0, rgba(15,23,42,0) 55%),
+        radial-gradient(circle at 100% 100%, #7c2d12 0, rgba(15,23,42,0) 55%),
+        var(--bg);
+      color: var(--text);
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-
-    .reel-hint::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.8);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.1); }
-    }
-
-    .film-reel {
-      margin-top: 42px;
-      padding: 16px 8px 14px;
-      border-radius: 22px;
-      background:
-        linear-gradient(180deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 1) 100%),
-        radial-gradient(circle at top, rgba(15, 23, 42, 1), transparent);
-      box-shadow:
-        inset 0 0 0 2px rgba(31, 41, 55, 0.9),
-        inset 0 16px 32px rgba(15, 23, 42, 1),
-        0 12px 32px rgba(15, 23, 42, 0.7);
-      position: relative;
+      justify-content: center;
+      padding: 20px;
       overflow: hidden;
-    }
-
-    .sprockets {
-      position: absolute;
-      top: 12px;
-      bottom: 12px;
-      width: 24px;
-      background:
-        repeating-linear-gradient(
-          to right,
-          transparent 0px,
-          var(--sprocket) 0px,
-          var(--sprocket) 6px,
-          transparent 6px
-        ),
-        repeating-linear-gradient(
-          to right,
-          transparent 0px,
-          var(--sprocket) 14px,
-          var(--sprocket) 20px,
-          transparent 20px
-        );
-      background-size: 24px 10px, 24px 12px;
-      opacity: 0.85;
-    }
-
-    .sprockets.left { left: 8px; }
-    .sprockets.right { right: 8px; }
-
-    .film-strip {
-      display: flex;
-      gap: 20px;
-      padding: 16px 36px 16px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      scroll-behavior: smooth;
-    }
-
-    .film-strip::-webkit-scrollbar { display: none; }
-
-    .film-frame {
-      flex: 0 0 78vw;
-      max-width: 380px;
-      scroll-snap-align: center;
       position: relative;
-      z-index: 2;
     }
 
-    @media (min-width: 768px) {
-      .film-frame { flex: 0 0 340px; }
-    }
-
-    .film-card {
-      background: var(--film);
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-      box-shadow:
-        0 20px 50px rgba(15, 23, 42, 0.95),
-        inset 0 2px 0 rgba(255,255,255,0.08);
-      border: none;
-    }
-
-    .film-perf {
-      height: 8px;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          transparent 0px,
-          rgba(99, 102, 241, 0.9) 0px,
-          rgba(99, 102, 241, 0.9) 2px,
-          transparent 2px
-        );
-      margin-bottom: 4px;
-    }
-
-    /* Shared image style: same size for all frames */
-    .film-image {
+    /* --- APP SHELL & LAYOUT --- */
+    .app-shell {
       width: 100%;
-      height: 280px;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      background: #0f172a;
+      max-width: 720px;
+      background: radial-gradient(circle at top, rgba(148,163,184,0.35), transparent 55%),
+                  rgba(15,23,42,0.96);
+      border-radius: 22px;
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: 0 28px 70px rgba(15,23,42,0.9);
+      padding: 24px 24px 20px;
+      backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Fine-tune crop + scale for IMG_5912.jpeg */
-    .fix-crop {
-      object-position: center 18%;
-      height: 200px;
-      transform: scale(1.30);
-      transform-origin: center center;
-    }
-
-    .film-meta {
-      padding: 14px 16px 16px;
-      background: linear-gradient(180deg, rgba(17,24,39,0.95) 0%, var(--film) 100%);
-    }
-
-    .meta-bar {
+    .app-header {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 6px;
-      font-size: 0.74rem;
-      color: #9ca3af;
+      margin-bottom: 20px;
+    }
+
+    .title-stack { display: flex; flex-direction: column; gap: 4px; }
+
+    .app-title {
+      font-size: 24px;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-weight: 500;
-    }
-
-    .meta-badge {
-      padding: 4px 10px;
-      border-radius: 12px;
-      background: rgba(56, 189, 248, 0.2);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      color: var(--accent);
-      font-size: 0.68rem;
-      font-weight: 600;
-    }
-
-    .film-title {
-      font-size: 1rem;
       font-weight: 700;
-      margin: 0 0 4px;
-      color: #f8fafc;
-      letter-spacing: -0.01em;
+      color: #fff;
     }
 
-    .film-caption {
-      font-size: 0.86rem;
-      color: #d1d5db;
-      line-height: 1.4;
-      margin: 0 0 8px;
-    }
-
-    .tags {
-      display: flex;
-      gap: 8px;
-    }
-
-    .tag {
-      font-size: 0.68rem;
+    .chip {
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.15em;
-      padding: 4px 10px;
-      border-radius: 12px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      color: #9ca3af;
-      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      opacity: 0.9;
     }
 
-    footer {
+    .flame-orb {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 60%, #020617);
+      box-shadow: 0 0 22px rgba(248,113,22,0.6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    /* --- PANELS & INPUTS --- */
+    .panel {
+      border-radius: var(--radius);
+      background: rgba(15,23,42,0.6);
+      border: var(--border-subtle);
+      padding: 16px;
+      position: relative;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      display: flex; justify-content: space-between;
+    }
+
+    .input-pair { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+    
+    .field label {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 9px;
+      border: 1px solid rgba(148,163,184,0.3);
+      background: rgba(15,23,42,0.8);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      background: rgba(15,23,42,0.95);
+      box-shadow: 0 0 0 1px rgba(249,115,22,0.3);
+    }
+
+    /* --- CONTROLS --- */
+    .actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mode-selector { flex: 1; min-width: 140px; }
+
+    .mode-select {
+      width: 100%;
+      appearance: none;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: #e5e7eb;
+      padding: 9px 30px 9px 12px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      /* Custom Arrow SVG */
+      background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      transition: border-color 0.2s;
+    }
+    .mode-select:focus { border-color: var(--accent); outline: none; }
+
+    .btn-row { display: flex; gap: 8px; }
+
+    button {
+      border-radius: 99px;
+      border: 1px solid transparent;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: #111827;
+      box-shadow: 0 4px 12px rgba(249,115,22,0.3);
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, #fb923c, #fdba74); }
+
+    .btn-ghost {
+      background: rgba(15,23,42,0.6);
+      border-color: rgba(148,163,184,0.4);
+      color: var(--muted);
+    }
+    .btn-ghost:hover { border-color: #fff; color: #fff; }
+
+    .hint {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .hint strong { color: #e5e7eb; }
+
+    /* --- RESULTS --- */
+    .result-shell {
       text-align: center;
-      padding: 12px 16px 36px;
-      font-size: 0.8rem;
-      color: #64748b;
+      padding: 10px 0;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .result-shell.reveal { opacity: 1; transform: scale(1); }
+
+    /* FLAMES VIEW */
+    .flame-badge { margin-bottom: 10px; }
+    .flame-letter {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 65%, #020617);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 32px; color: #fff;
+      box-shadow: 0 0 25px rgba(248,113,22,0.5);
+    }
+
+    /* VEDIC VIEW */
+    .vedic-badge {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      margin-bottom: 10px;
+    }
+    .planet-icon { font-size: 36px; animation: float 3s ease-in-out infinite; }
+    .num-display {
+      font-size: 56px; font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 12px rgba(167,139,250,0.3));
+    }
+    @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+
+    .relationship {
+      font-size: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 6px; color: #fff;
+    }
+    .relationship span { color: #fed7aa; }
+
+    .relationship-detail { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+
+    .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+    .tag {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 3px 8px; border-radius: 10px;
+      background: rgba(255,255,255,0.05); color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .error { color: var(--danger); font-size: 11px; margin-top: 8px; }
+
+    /* --- FOOTER & CONFETTI --- */
+    .footer {
+      margin-top: 15px;
+      font-size: 10px;
+      color: rgba(148,163,184,0.4);
+      text-align: center;
       letter-spacing: 0.05em;
     }
 
-    .glow {
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0;
-      animation: projector-glow 6s infinite;
-    }
-
-    @keyframes projector-glow {
-      0%, 100% { opacity: 0; transform: translateX(-20%) translateY(-20%) rotate(0deg); }
-      50% { opacity: 0.3; transform: translateX(0%) translateY(0%) rotate(2deg); }
-    }
+    .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
+    .confetti { position: absolute; font-size: 20px; animation: fall 3s linear forwards; }
+    @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Memory Film Reel</h1>
-    <p>Swipe to unwind the reel, frame by nostalgic frame</p>
-  </header>
 
-  <main>
-    <section class="projector">
-      <div class="glow"></div>
-      <div class="reel-label">35mm Memory Reel</div>
-      <div class="reel-hint">← Swipe to rewind</div>
+  <div class="confetti-container" id="confettiContainer"></div>
 
-      <div class="film-reel">
-        <div class="sprockets left"></div>
-        <div class="sprockets right"></div>
-
-        <div class="film-strip">
-          <!-- FRAME 1 · Lullaby Horse (newest) -->
-          <div class="film-frame">
-            <article class="film-card">
-              <div class="film-perf"></div>
-              <img
-                src="photos/Lullaby Horse.png"
-                alt="Lullaby Horse"
-                class="film-image"
-              >
-              <div class="film-meta">
-                <div class="meta-bar">
-                  <span>Dec 2025 · Dreamscape</span>
-                  <span class="meta-badge">Latest Frame</span>
-                </div>
-                <h3 class="film-title">Lullaby Horse</h3>
-                <p class="film-caption">
-                  A quiet moment captured in soft light, like a dream you want to stay in forever.
-                </p>
-                <div class="tags">
-                  <span class="tag">dreamy</span>
-                  <span class="tag">favorite</span>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <!-- FRAME 2 · IMG_5912.jpeg -->
-          <div class="film-frame">
-            <article class="film-card">
-              <div class="film-perf"></div>
-              <img
-                src="photos/IMG_52.jpeg"
-                alt="IMG_5912"
-                class="film-image fix-crop"
-              >
-              <div class="film-meta">
-                <div class="meta-bar">
-                  <span>Nov 2025 · Memory lane</span>
-                  <span class="meta-badge">New Frame</span>
-                </div>
-                <h3 class="film-title">IMG_5912</h3>
-                <p class="film-caption">
-                  Another piece of the story, snapped just before everything shifted into a new chapter.
-                </p>
-                <div class="tags">
-                  <span class="tag">moment</span>
-                  <span class="tag">story</span>
-                </div>
-              </div>
-            </article>
-          </div>
-
-        </div>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="title-stack">
+        <div class="app-title">Match Lab</div>
+        <div class="chip">Name Compatibility</div>
       </div>
-    </section>
-  </main>
+      <div class="flame-orb">🔥</div>
+    </header>
 
-  <footer>
-    alstarian.github.io/memorylane · Pure CSS Film Reel
-  </footer>
+    <main class="layout">
+      <!-- INPUT SECTION -->
+      <section class="panel">
+        <h2>
+          <span>Enter Names</span>
+          <span style="opacity:0.5; font-size:9px;">Step 1</span>
+        </h2>
+
+        <div class="input-pair">
+          <div class="field">
+            <label>Name One</label>
+            <input type="text" id="name1" placeholder="e.g. Ali Hassan" />
+          </div>
+          <div class="field">
+            <label>Name Two</label>
+            <input type="text" id="name2" placeholder="e.g. Sidra Zaidi" />
+          </div>
+        </div>
+
+        <div class="actions-row">
+          <div class="mode-selector">
+            <select id="gameMode" class="mode-select">
+              <option value="flames">🔥 Classic FLAMES</option>
+              <option value="vedic">🕉️ Vedic / Indian System</option>
+            </select>
+          </div>
+          
+          <div class="btn-row">
+            <button class="btn-ghost" id="resetBtn">Reset</button>
+            <button class="btn-primary" id="matchBtn">Reveal</button>
+          </div>
+        </div>
+
+        <p class="hint" id="modeHint">
+          Uses classic letter-crossing logic for a fun match.
+        </p>
+
+        <div id="error" class="error"></div>
+      </section>
+
+      <!-- RESULT SECTION -->
+      <aside class="panel">
+        <h2>
+          <span>Result</span>
+          <span style="opacity:0.5; font-size:9px;">Step 2</span>
+        </h2>
+        
+        <div class="result-shell" id="resultShell">
+          
+          <!-- FLAMES Output (Visible by default) -->
+          <div id="flamesView">
+            <div class="flame-badge">
+              <span class="flame-letter" id="flameLetter">-</span>
+            </div>
+          </div>
+
+          <!-- Vedic Output (Hidden by default) -->
+          <div id="vedicView" style="display: none;">
+            <div class="vedic-badge">
+              <span class="planet-icon" id="planetIcon">🪐</span>
+              <span class="num-display" id="vedicNumber">?</span>
+            </div>
+          </div>
+
+          <div class="relationship">
+            <span id="resultLabel">Waiting...</span>
+          </div>
+          
+          <div class="relationship-detail" id="resultDetail">
+            Select a mode, enter names, and click Reveal.
+          </div>
+
+          <div class="tags" id="tagsRow">
+            <span class="tag">Ready</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+    
+    <footer class="footer">
+      🔒 Privacy Friendly • No Data Stored • Client-side Only
+    </footer>
+  </div>
+
+<script>
+    // --- 1. CONFIGURATION & DATA ---
+
+    // Classic FLAMES Data
+    const FLAMES_MAP = {
+      F: { label: "Friends", detail: "Strong buddy energy. Expect memes and late-night chats.", tags: ["Platonic", "Trusted"] },
+      L: { label: "Love", detail: "Soft-focus filter unlocked. Romantic potential detected.", tags: ["Crush", "Heart Eyes"] },
+      A: { label: "Affection", detail: "Warm and caring connection. Supportive vibes.", tags: ["Comfort", "Soft"] },
+      M: { label: "Marriage", detail: "Long-term storyline. Commitment and stability.", tags: ["Endgame", "Power Duo"] },
+      E: { label: "Enemies", detail: "Spicy dynamic. Rivalry, banter, or clashing personalities.", tags: ["Frenemies", "Clash"] },
+      S: { label: "Siblings", detail: "Teasing but protective. Family-coded energy.", tags: ["Chaos", "Caring"] }
+    };
+
+    // Chaldean (Vedic) Data
+    // Note: No letter is assigned the number 9.
+    const VEDIC_MAP = {
+      a: 1, i: 1, j: 1, q: 1, y: 1,
+      b: 2, k: 2, r: 2,
+      c: 3, g: 3, l: 3, s: 3,
+      d: 4, m: 4, t: 4,
+      e: 5, h: 5, n: 5, x: 5,
+      u: 6, v: 6, w: 6,
+      o: 7, z: 7,
+      f: 8, p: 8
+    };
+
+    const VEDIC_MEANINGS = {
+      1: { planet: "☀️", label: "Sun (Surya)", detail: "Power couple. High ego, leadership, and ambition.", tags: ["Royalty", "Fire"] },
+      2: { planet: "🌙", label: "Moon (Chandra)", detail: "Emotional connection. Intuitive, moody, and deep.", tags: ["Water", "Soul"] },
+      3: { planet: "⚡", label: "Jupiter (Guru)", detail: "Wisdom match. Growth, learning, and luck.", tags: ["Expansion", "Luck"] },
+      4: { planet: "☄️", label: "Rahu", detail: "Unconventional bond. Breaks rules, electric energy.", tags: ["Wildcard", "Rebel"] },
+      5: { planet: "🗣️", label: "Mercury (Budha)", detail: "Intellectual match. Great communication and wit.", tags: ["Chatty", "Smart"] },
+      6: { planet: "💎", label: "Venus (Shukra)", detail: "Romance & Luxury. Passionate and aesthetic.", tags: ["Love", "Beauty"] },
+      7: { planet: "🧘", label: "Ketu", detail: "Spiritual bond. Detached from worldly drama.", tags: ["Mystic", "Deep"] },
+      8: { planet: "🪐", label: "Saturn (Shani)", detail: "Serious bond. Slow burn, requires patience.", tags: ["Karma", "Stable"] },
+      9: { planet: "⚔️", label: "Mars (Mangal)", detail: "High energy. Passionate, impulsive, and driven.", tags: ["Action", "Heat"] }
+    };
+
+    // --- 2. DOM ELEMENTS ---
+    const name1Input = document.getElementById("name1");
+    const name2Input = document.getElementById("name2");
+    const matchBtn = document.getElementById("matchBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const modeSelect = document.getElementById("gameMode");
+    const modeHint = document.getElementById("modeHint");
+    const errorEl = document.getElementById("error");
+
+    const resultShell = document.getElementById("resultShell");
+    const flamesView = document.getElementById("flamesView");
+    const vedicView = document.getElementById("vedicView");
+
+    const resultLabel = document.getElementById("resultLabel");
+    const resultDetail = document.getElementById("resultDetail");
+    const tagsRow = document.getElementById("tagsRow");
+
+    // Specific Output Elements
+    const flameLetterEl = document.getElementById("flameLetter");
+    const vedicNumberEl = document.getElementById("vedicNumber");
+    const planetIconEl = document.getElementById("planetIcon");
+
+    // --- 3. UTILITY & LOGIC ---
+
+    function normalize(str) {
+      return str.toLowerCase().replace(/[^a-z]/g, "");
+    }
+
+    function createConfetti() {
+      const container = document.getElementById("confettiContainer");
+      const icons = ["✨", "❤️", "🔥", "🔮", "⚡"];
+      for(let i=0; i<30; i++) {
+        const el = document.createElement("div");
+        el.className = "confetti";
+        el.textContent = icons[Math.floor(Math.random() * icons.length)];
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+      }
+    }
+
+    // --- FLAMES LOGIC ---
+    function runFlames(n1, n2) {
+      let a = n1.split("");
+      let b = n2.split("");
+      
+      // Cancel matches
+      for(let i=0; i<a.length; i++) {
+        const idx = b.indexOf(a[i]);
+        if(idx !== -1) {
+          a[i] = "";
+          b[idx] = "";
+        }
+      }
+      
+      const count = a.join("").length + b.join("").length;
+      if (count === 0) return "S";
+
+      const arr = ["F", "L", "A", "M", "E", "S"];
+      let idx = 0;
+      let steps = count;
+      let workingArr = [...arr];
+
+      while (workingArr.length > 1) {
+        idx = (idx + steps - 1) % workingArr.length;
+        workingArr.splice(idx, 1);
+      }
+      return workingArr[0];
+    }
+
+    // --- VEDIC LOGIC (H=5) ---
+    function getVedicSum(name) {
+      let sum = 0;
+      for (let char of name) {
+        if (VEDIC_MAP[char]) sum += VEDIC_MAP[char];
+      }
+      while (sum > 9) {
+        sum = String(sum).split('').reduce((a,b) => parseInt(a)+parseInt(b), 0);
+      }
+      return sum;
+    }
+
+    function runVedic(n1, n2) {
+      const v1 = getVedicSum(n1);
+      const v2 = getVedicSum(n2);
+      let total = v1 + v2;
+      while (total > 9) {
+        total = String(total).split('').reduce((a,b) => parseInt(a)+parseInt(b), 0);
+      }
+      return total;
+    }
+
+    // --- 4. EVENT HANDLERS ---
+
+    // Update hint text based on selection
+    modeSelect.addEventListener("change", function() {
+      if (this.value === 'flames') {
+        modeHint.textContent = "Uses classic letter-crossing logic for a fun match.";
+      } else {
+        modeHint.innerHTML = "Uses the <strong>Chaldean (Vedic)</strong> system.<br>Favoured by Indian Astrologers (e.g. H=5).";
+      }
+    });
+
+    // Run Match
+    matchBtn.addEventListener("click", function() {
+      const raw1 = name1Input.value;
+      const raw2 = name2Input.value;
+      const clean1 = normalize(raw1);
+      const clean2 = normalize(raw2);
+      const mode = modeSelect.value;
+
+      errorEl.textContent = "";
+
+      if (!clean1 || !clean2) {
+        errorEl.textContent = "Please enter two valid names.";
+        return;
+      }
+
+      // 1. Reset Animation
+      resultShell.classList.remove("reveal");
+      
+      // 2. Process Result
+      setTimeout(() => {
+        resultShell.classList.add("reveal");
+        createConfetti();
+
+        if (mode === 'flames') {
+          // Show FLAMES
+          flamesView.style.display = "block";
+          vedicView.style.display = "none";
+          
+          const letter = runFlames(clean1, clean2);
+          const data = FLAMES_MAP[letter];
+          
+          flameLetterEl.textContent = letter;
+          resultLabel.textContent = data.label;
+          resultDetail.textContent = data.detail;
+          
+          tagsRow.innerHTML = "";
+          data.tags.forEach(t => {
+            tagsRow.innerHTML += `<span class="tag">${t}</span>`;
+          });
+
+        } else {
+          // Show Vedic
+          flamesView.style.display = "none";
+          vedicView.style.display = "block";
+          
+          const number = runVedic(clean1, clean2);
+          const data = VEDIC_MEANINGS[number];
+          
+          vedicNumberEl.textContent = number;
+          planetIconEl.textContent = data.planet;
+          resultLabel.textContent = data.label;
+          resultDetail.textContent = data.detail;
+          
+          tagsRow.innerHTML = "";
+          data.tags.forEach(t => {
+            tagsRow.innerHTML += `<span class="tag">${t}</span>`;
+          });
+        }
+      }, 50);
+    });
+
+    // Reset UI
+    resetBtn.addEventListener("click", function() {
+      name1Input.value = "";
+      name2Input.value = "";
+      errorEl.textContent = "";
+      resultShell.classList.remove("reveal");
+      resultLabel.textContent = "Waiting...";
+      resultDetail.textContent = "Select a mode, enter names, and click Reveal.";
+      tagsRow.innerHTML = '<span class="tag">Ready</span>';
+    });
+
+    // Enter Key Support
+    [name1Input, name2Input].forEach(function(input, index) {
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (index === 0) name2Input.focus();
+          else matchBtn.click();
+        }
+      });
+    });
+</script>
 </body>
 </html>

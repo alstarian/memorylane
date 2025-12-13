@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Match Lab: FLAMES & Vedic</title>
+  <title>FLAMES Match</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -18,12 +18,15 @@
       --border-subtle: 1px solid rgba(148,163,184,0.25);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
       background:
         radial-gradient(circle at 0% 0%, #1f2937 0, rgba(15,23,42,0) 55%),
         radial-gradient(circle at 100% 100%, #7c2d12 0, rgba(15,23,42,0) 55%),
@@ -37,7 +40,6 @@
       position: relative;
     }
 
-    /* --- APP SHELL & LAYOUT --- */
     .app-shell {
       width: 100%;
       max-width: 720px;
@@ -52,301 +54,662 @@
       overflow: hidden;
     }
 
+    .app-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(248,113,113,0.16), transparent 55%),
+        radial-gradient(circle at 85% 100%, rgba(96,165,250,0.16), transparent 55%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
     .app-header {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
+      gap: 12px;
     }
 
-    .title-stack { display: flex; flex-direction: column; gap: 4px; }
+    .title-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
     .app-title {
       font-size: 24px;
       letter-spacing: 0.09em;
       text-transform: uppercase;
       font-weight: 700;
-      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .chip {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: var(--accent);
-      opacity: 0.9;
+      padding: 3px 8px 2px;
+      border-radius: 20px;
+      border: 1px solid rgba(248,250,252,0.18);
+      background: linear-gradient(135deg, rgba(249,115,22,0.25), rgba(15,23,42,0.4));
+      color: #fff;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      background: rgba(15,23,42,0.7);
+    }
+
+    .pill strong {
+      color: #e5e7eb;
+      font-weight: 600;
     }
 
     .flame-orb {
-      width: 42px; height: 42px;
-      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
       background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 60%, #020617);
-      box-shadow: 0 0 22px rgba(248,113,22,0.6);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
+      position: relative;
+      box-shadow:
+        0 0 22px rgba(248,113,22,0.75),
+        0 0 60px rgba(248,113,22,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fffbeb;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      font-size: 12px;
+    }
+
+    .flame-orb::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 0%, rgba(254,249,195,0.8), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
     }
 
     .layout {
+      position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
       gap: 16px;
     }
 
-    @media (max-width: 700px) {
-      .layout { grid-template-columns: 1fr; }
+    @media (max-width: 720px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .app-shell {
+        padding: 18px 16px 16px;
+      }
+      .app-header {
+        align-items: flex-start;
+      }
     }
 
-    /* --- PANELS & INPUTS --- */
     .panel {
-      border-radius: var(--radius);
-      background: rgba(15,23,42,0.6);
-      border: var(--border-subtle);
-      padding: 16px;
       position: relative;
+      border-radius: var(--radius);
+      background: radial-gradient(circle at top left, rgba(148,163,184,0.18), transparent 55%),
+                  rgba(15,23,42,0.95);
+      border: var(--border-subtle);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
     }
 
     .panel h2 {
-      margin: 0 0 12px;
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .panel h2 span.label {
+      color: #e5e7eb;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      border-radius: 999px;
+      padding: 3px 8px 2px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.85);
+    }
+
+    .names-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .names-row .side-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    .input-pair {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .input-pair {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field label {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: var(--muted);
-      display: flex; justify-content: space-between;
-    }
-
-    .input-pair { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-    
-    .field label {
-      display: block;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 5px;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 10px;
+      padding: 8px 9px;
       border-radius: 9px;
-      border: 1px solid rgba(148,163,184,0.3);
-      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.9);
       color: var(--text);
-      font-size: 14px;
+      font-size: 13px;
       outline: none;
-      transition: all 0.2s;
-    }
-    input[type="text"]:focus {
-      border-color: var(--accent);
-      background: rgba(15,23,42,0.95);
-      box-shadow: 0 0 0 1px rgba(249,115,22,0.3);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
-    /* --- CONTROLS --- */
+    input[type="text"]::placeholder {
+      color: rgba(148,163,184,0.65);
+    }
+
+    input[type="text"]:focus {
+      border-color: rgba(249,115,22,0.9);
+      box-shadow: 0 0 0 1px rgba(249,115,22,0.35);
+      background: rgba(15,23,42,0.95);
+    }
+
+    /* MODE SELECTOR SECTION - PROMINENT VISUAL */
+    .mode-selector-wrapper {
+      margin-bottom: 10px;
+      padding: 10px;
+      background: rgba(249,115,22,0.08);
+      border: 1px dashed rgba(249,115,22,0.4);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .mode-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .mode-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mode-badge {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: #111;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    .mode-select {
+      width: 100%;
+      appearance: none;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--text);
+      padding: 10px 32px 10px 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23f97316' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      transition: all 0.2s ease;
+    }
+
+    .mode-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(249,115,22,0.2);
+      outline: none;
+    }
+
+    .mode-select:hover {
+      border-color: var(--accent);
+    }
+
     .actions-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      margin-top: 4px;
       flex-wrap: wrap;
     }
 
-    .mode-selector { flex: 1; min-width: 140px; }
-
-    .mode-select {
-      width: 100%;
-      appearance: none;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: #e5e7eb;
-      padding: 9px 30px 9px 12px;
-      border-radius: 99px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      /* Custom Arrow SVG */
-      background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      transition: border-color 0.2s;
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
     }
-    .mode-select:focus { border-color: var(--accent); outline: none; }
 
-    .btn-row { display: flex; gap: 8px; }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
 
     button {
-      border-radius: 99px;
+      border-radius: 999px;
       border: 1px solid transparent;
-      padding: 9px 16px;
+      padding: 6px 12px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      color: var(--text);
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
     }
 
     .btn-primary {
       background: linear-gradient(135deg, #f97316, #fb923c);
+      border-color: rgba(248,250,252,0.05);
       color: #111827;
-      box-shadow: 0 4px 12px rgba(249,115,22,0.3);
+      box-shadow:
+        0 10px 22px rgba(248,113,22,0.45),
+        0 0 0 1px rgba(15,23,42,0.75) inset;
     }
-    .btn-primary:hover { background: linear-gradient(135deg, #fb923c, #fdba74); }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #fb923c, #fdba74);
+    }
 
     .btn-ghost {
-      background: rgba(15,23,42,0.6);
-      border-color: rgba(148,163,184,0.4);
+      border-color: rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.7);
       color: var(--muted);
     }
-    .btn-ghost:hover { border-color: #fff; color: #fff; }
 
-    .hint {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px dashed rgba(255,255,255,0.1);
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.4;
+    .btn-ghost:hover {
+      border-color: rgba(148,163,184,0.9);
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.9);
     }
-    .hint strong { color: #e5e7eb; }
 
-    /* --- RESULTS --- */
     .result-shell {
+      position: relative;
       text-align: center;
-      padding: 10px 0;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      padding: 6px 6px 10px;
     }
-    .result-shell.reveal { opacity: 1; transform: scale(1); }
 
-    /* FLAMES VIEW */
-    .flame-badge { margin-bottom: 10px; }
+    .result-shell.reveal {
+      animation: resultPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes resultPop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .flame-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: conic-gradient(from 200deg, rgba(248,113,22,0.2), rgba(37,99,235,0.2), rgba(248,113,22,0.25));
+      border: 1px solid rgba(148,163,184,0.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-bottom: 6px;
+      color: #e5e7eb;
+    }
+
     .flame-letter {
-      width: 64px; height: 64px;
-      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
       background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 65%, #020617);
-      display: inline-flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 32px; color: #fff;
-      box-shadow: 0 0 25px rgba(248,113,22,0.5);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #fffbeb;
+      box-shadow: 0 0 12px rgba(248,113,22,0.8);
     }
 
-    /* VEDIC VIEW */
-    .vedic-badge {
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      margin-bottom: 10px;
+    .result-shell.reveal .flame-letter {
+      animation: letterGlow 0.6s ease 0.2s;
     }
-    .planet-icon { font-size: 36px; animation: float 3s ease-in-out infinite; }
+
+    @keyframes letterGlow {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(248,113,22,0.8);
+      }
+      50% {
+        box-shadow: 
+          0 0 30px rgba(248,113,22,1),
+          0 0 60px rgba(248,113,22,0.6);
+        transform: scale(1.2);
+      }
+    }
+
+    /* VEDIC DISPLAY */
+    .vedic-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .planet-icon {
+      font-size: 28px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
     .num-display {
-      font-size: 56px; font-weight: 800;
+      font-size: 48px;
+      font-weight: 800;
       background: linear-gradient(135deg, #a78bfa, #c084fc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 12px rgba(167,139,250,0.3));
+      filter: drop-shadow(0 0 15px rgba(167,139,250,0.4));
     }
-    @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
 
     .relationship {
-      font-size: 16px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      margin-bottom: 6px; color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
     }
-    .relationship span { color: #fed7aa; }
 
-    .relationship-detail { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+    .relationship span {
+      color: #fed7aa;
+    }
 
-    .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+    .relationship-detail {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
     .tag {
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
-      padding: 3px 8px; border-radius: 10px;
-      background: rgba(255,255,255,0.05); color: var(--muted);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .error { color: var(--danger); font-size: 11px; margin-top: 8px; }
-
-    /* --- FOOTER & CONFETTI --- */
-    .footer {
-      margin-top: 15px;
       font-size: 10px;
-      color: rgba(148,163,184,0.4);
-      text-align: center;
-      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 3px 8px 2px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--muted);
+      background: rgba(15,23,42,0.8);
     }
 
-    .confetti-container { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
-    .confetti { position: absolute; font-size: 20px; animation: fall 3s linear forwards; }
-    @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+    .error {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--danger);
+    }
+
+    .mini-steps {
+      margin-top: 4px;
+      border-radius: 10px;
+      border: 1px dashed rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.85);
+      padding: 6px 8px 5px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .mini-steps strong {
+      color: #e5e7eb;
+    }
+
+    .mini-steps ul {
+      padding-left: 16px;
+      margin: 4px 0 0;
+    }
+
+    .mini-steps li {
+      margin: 0;
+    }
+
+    .footer {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      position: relative;
+    }
+
+    .footer a {
+      color: #f97316;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      font-size: 20px;
+      animation: confettiFall 3s linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
-
   <div class="confetti-container" id="confettiContainer"></div>
 
   <div class="app-shell">
     <header class="app-header">
       <div class="title-stack">
-        <div class="app-title">Match Lab</div>
-        <div class="chip">Name Compatibility</div>
+        <div class="app-title">
+          FLAMES
+          <span class="chip">Name Match Lab</span>
+        </div>
+        <div class="pill-row">
+          <div class="pill"><strong>F</strong>riends</div>
+          <div class="pill"><strong>L</strong>ove</div>
+          <div class="pill"><strong>A</strong>ffection</div>
+          <div class="pill"><strong>M</strong>arriage</div>
+          <div class="pill"><strong>E</strong>nemies</div>
+          <div class="pill"><strong>S</strong>iblings</div>
+        </div>
       </div>
       <div class="flame-orb">🔥</div>
     </header>
 
     <main class="layout">
-      <!-- INPUT SECTION -->
-      <section class="panel">
+      <section class="panel" aria-label="Input names for FLAMES">
         <h2>
-          <span>Enter Names</span>
-          <span style="opacity:0.5; font-size:9px;">Step 1</span>
+          Enter names
+          <span class="label">Paper game, web vibes</span>
         </h2>
 
-        <div class="input-pair">
-          <div class="field">
-            <label>Name One</label>
-            <input type="text" id="name1" placeholder="e.g. Ali Hassan" />
+        <div class="names-row">
+          <span class="side-label">Between</span>
+          <div class="input-pair">
+            <div class="field">
+              <label for="name1">Name one</label>
+              <input type="text" id="name1" placeholder="e.g. Murarilal Dholakia" />
+            </div>
+            <div class="field">
+              <label for="name2">Name two</label>
+              <input type="text" id="name2" placeholder="e.g. Champa Rani" />
+            </div>
           </div>
-          <div class="field">
-            <label>Name Two</label>
-            <input type="text" id="name2" placeholder="e.g. Sidra Zaidi" />
+        </div>
+
+        <!-- NEW: PROMINENT MODE SELECTOR -->
+        <div class="mode-selector-wrapper">
+          <div class="mode-label-row">
+            <span class="mode-label">
+              Choose Algorithm
+            </span>
+            <span class="mode-badge">2 MODES</span>
           </div>
+          <select id="gameMode" class="mode-select">
+            <option value="flames">🔥 Classic FLAMES (Letter Crossing)</option>
+            <option value="vedic">🕉️ Vedic Numerology (Chaldean)</option>
+          </select>
         </div>
 
         <div class="actions-row">
-          <div class="mode-selector">
-            <select id="gameMode" class="mode-select">
-              <option value="flames">🔥 Classic FLAMES</option>
-              <option value="vedic">🕉️ Vedic / Indian System</option>
-            </select>
-          </div>
-          
+          <p class="hint" id="modeHint">Uses the classic letter-crossing FLAMES logic for a just-for-fun match.</p>
           <div class="btn-row">
-            <button class="btn-ghost" id="resetBtn">Reset</button>
-            <button class="btn-primary" id="matchBtn">Reveal</button>
+            <button class="btn-ghost" id="resetBtn" type="button">Reset</button>
+            <button class="btn-primary" id="matchBtn" type="button">🔥 Run Match</button>
           </div>
         </div>
 
-        <p class="hint" id="modeHint">
-          Uses classic letter-crossing logic for a fun match.
-        </p>
+        <div class="mini-steps" id="howItWorks">
+          <strong>How Classic FLAMES works:</strong>
+          <ul>
+            <li>Strip spaces and cancel shared letters in both names.</li>
+            <li>Count the leftover letters.</li>
+            <li>Use that count to pick one letter from F-L-A-M-E-S.</li>
+          </ul>
+        </div>
 
-        <div id="error" class="error"></div>
+        <div id="error" class="error" role="alert" aria-live="polite"></div>
       </section>
 
-      <!-- RESULT SECTION -->
-      <aside class="panel">
+      <aside class="panel" aria-label="FLAMES result">
         <h2>
-          <span>Result</span>
-          <span style="opacity:0.5; font-size:9px;">Step 2</span>
+          Result
+          <span class="label">For entertainment only</span>
         </h2>
-        
+
         <div class="result-shell" id="resultShell">
           
-          <!-- FLAMES Output (Visible by default) -->
+          <!-- FLAMES VIEW -->
           <div id="flamesView">
             <div class="flame-badge">
-              <span class="flame-letter" id="flameLetter">-</span>
+              <span class="flame-letter" id="flameLetter">–</span>
+              <span id="badgeText">Waiting for names</span>
             </div>
           </div>
 
-          <!-- Vedic Output (Hidden by default) -->
+          <!-- VEDIC VIEW -->
           <div id="vedicView" style="display: none;">
             <div class="vedic-badge">
               <span class="planet-icon" id="planetIcon">🪐</span>
@@ -355,40 +718,83 @@
           </div>
 
           <div class="relationship">
-            <span id="resultLabel">Waiting...</span>
+            <span id="relationshipLabel">No match yet</span>
           </div>
-          
-          <div class="relationship-detail" id="resultDetail">
-            Select a mode, enter names, and click Reveal.
+          <div class="relationship-detail" id="relationshipDetail">
+            Type two names and hit "Run Match" to see what the system says.
           </div>
 
           <div class="tags" id="tagsRow">
-            <span class="tag">Ready</span>
+            <span class="tag">nostalgia mode</span>
+            <span class="tag">school desk game</span>
           </div>
         </div>
       </aside>
     </main>
-    
+
     <footer class="footer">
-      🔒 Privacy Friendly • No Data Stored • Client-side Only
+      <span>🔒 Privacy: No data stored. Everything runs in your browser.</span>
     </footer>
   </div>
 
-<script>
-    // --- 1. CONFIGURATION & DATA ---
+  <script>
+    const name1Input = document.getElementById("name1");
+    const name2Input = document.getElementById("name2");
+    const matchBtn = document.getElementById("matchBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const modeSelect = document.getElementById("gameMode");
+    const modeHint = document.getElementById("modeHint");
+    const howItWorks = document.getElementById("howItWorks");
+    const errorEl = document.getElementById("error");
+    const resultShell = document.getElementById("resultShell");
+    const confettiContainer = document.getElementById("confettiContainer");
 
-    // Classic FLAMES Data
+    const flamesView = document.getElementById("flamesView");
+    const vedicView = document.getElementById("vedicView");
+
+    const flameLetterEl = document.getElementById("flameLetter");
+    const badgeTextEl = document.getElementById("badgeText");
+    const vedicNumberEl = document.getElementById("vedicNumber");
+    const planetIconEl = document.getElementById("planetIcon");
+
+    const relationshipLabelEl = document.getElementById("relationshipLabel");
+    const relationshipDetailEl = document.getElementById("relationshipDetail");
+    const tagsRowEl = document.getElementById("tagsRow");
+
+    // --- DATA ---
     const FLAMES_MAP = {
-      F: { label: "Friends", detail: "Strong buddy energy. Expect memes and late-night chats.", tags: ["Platonic", "Trusted"] },
-      L: { label: "Love", detail: "Soft-focus filter unlocked. Romantic potential detected.", tags: ["Crush", "Heart Eyes"] },
-      A: { label: "Affection", detail: "Warm and caring connection. Supportive vibes.", tags: ["Comfort", "Soft"] },
-      M: { label: "Marriage", detail: "Long-term storyline. Commitment and stability.", tags: ["Endgame", "Power Duo"] },
-      E: { label: "Enemies", detail: "Spicy dynamic. Rivalry, banter, or clashing personalities.", tags: ["Frenemies", "Clash"] },
-      S: { label: "Siblings", detail: "Teasing but protective. Family-coded energy.", tags: ["Chaos", "Caring"] }
+      F: {
+        label: "Friends",
+        detail: "Strong buddy energy. Expect memes, inside jokes, and late-night chats.",
+        tags: ["platonic vibes", "trusted ally"]
+      },
+      L: {
+        label: "Love",
+        detail: "Soft-focus filter unlocked. The game thinks there's romantic potential here.",
+        tags: ["crush alert", "heart eyes"]
+      },
+      A: {
+        label: "Affection",
+        detail: "Warm, caring connection. Lots of support, hype, and gentle chaos.",
+        tags: ["comfort zone", "soft spot"]
+      },
+      M: {
+        label: "Marriage",
+        detail: "Long-term storyline unlocked. Think commitment, stability, and shared plans.",
+        tags: ["endgame?", "power duo"]
+      },
+      E: {
+        label: "Enemies",
+        detail: "Spicy dynamic detected. Rivalry, banter, or just clashing personalities.",
+        tags: ["frenemies", "main character conflict"]
+      },
+      S: {
+        label: "Siblings",
+        detail: "Sibling energy. Teasing, roasting, but low-key looking out for each other.",
+        tags: ["chaos but caring", "family-coded"]
+      }
     };
 
-    // Chaldean (Vedic) Data
-    // Note: No letter is assigned the number 9.
     const VEDIC_MAP = {
       a: 1, i: 1, j: 1, q: 1, y: 1,
       b: 2, k: 2, r: 2,
@@ -402,91 +808,71 @@
 
     const VEDIC_MEANINGS = {
       1: { planet: "☀️", label: "Sun (Surya)", detail: "Power couple. High ego, leadership, and ambition.", tags: ["Royalty", "Fire"] },
-      2: { planet: "🌙", label: "Moon (Chandra)", detail: "Emotional connection. Intuitive, moody, and deep.", tags: ["Water", "Soul"] },
+      2: { planet: "🌙", label: "Moon (Chandra)", detail: "Emotional connection. Intuitive and moody.", tags: ["Water", "Deep"] },
       3: { planet: "⚡", label: "Jupiter (Guru)", detail: "Wisdom match. Growth, learning, and luck.", tags: ["Expansion", "Luck"] },
       4: { planet: "☄️", label: "Rahu", detail: "Unconventional bond. Breaks rules, electric energy.", tags: ["Wildcard", "Rebel"] },
       5: { planet: "🗣️", label: "Mercury (Budha)", detail: "Intellectual match. Great communication and wit.", tags: ["Chatty", "Smart"] },
       6: { planet: "💎", label: "Venus (Shukra)", detail: "Romance & Luxury. Passionate and aesthetic.", tags: ["Love", "Beauty"] },
-      7: { planet: "🧘", label: "Ketu", detail: "Spiritual bond. Detached from worldly drama.", tags: ["Mystic", "Deep"] },
-      8: { planet: "🪐", label: "Saturn (Shani)", detail: "Serious bond. Slow burn, requires patience.", tags: ["Karma", "Stable"] },
+      7: { planet: "🧘", label: "Ketu", detail: "Spiritual bond. Detached from worldly drama.", tags: ["Mystic", "Soul"] },
+      8: { planet: "🪐", label: "Saturn (Shani)", detail: "Serious bond. Slow burn, requires patience.", tags: ["Karma", "Work"] },
       9: { planet: "⚔️", label: "Mars (Mangal)", detail: "High energy. Passionate, impulsive, and driven.", tags: ["Action", "Heat"] }
     };
 
-    // --- 2. DOM ELEMENTS ---
-    const name1Input = document.getElementById("name1");
-    const name2Input = document.getElementById("name2");
-    const matchBtn = document.getElementById("matchBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const modeSelect = document.getElementById("gameMode");
-    const modeHint = document.getElementById("modeHint");
-    const errorEl = document.getElementById("error");
-
-    const resultShell = document.getElementById("resultShell");
-    const flamesView = document.getElementById("flamesView");
-    const vedicView = document.getElementById("vedicView");
-
-    const resultLabel = document.getElementById("resultLabel");
-    const resultDetail = document.getElementById("resultDetail");
-    const tagsRow = document.getElementById("tagsRow");
-
-    // Specific Output Elements
-    const flameLetterEl = document.getElementById("flameLetter");
-    const vedicNumberEl = document.getElementById("vedicNumber");
-    const planetIconEl = document.getElementById("planetIcon");
-
-    // --- 3. UTILITY & LOGIC ---
-
-    function normalize(str) {
-      return str.toLowerCase().replace(/[^a-z]/g, "");
+    // --- UTILS ---
+    function normalizeName(value) {
+      return value.toLowerCase().replace(/[^a-z]/g, "");
     }
 
-    function createConfetti() {
-      const container = document.getElementById("confettiContainer");
-      const icons = ["✨", "❤️", "🔥", "🔮", "⚡"];
-      for(let i=0; i<30; i++) {
-        const el = document.createElement("div");
-        el.className = "confetti";
-        el.textContent = icons[Math.floor(Math.random() * icons.length)];
-        el.style.left = Math.random() * 100 + "vw";
-        el.style.animationDuration = (Math.random() * 2 + 2) + "s";
-        container.appendChild(el);
-        setTimeout(() => el.remove(), 4000);
-      }
-    }
+    function countUniqueLetters(a, b) {
+      let nameA = a.split("");
+      let nameB = b.split("");
 
-    // --- FLAMES LOGIC ---
-    function runFlames(n1, n2) {
-      let a = n1.split("");
-      let b = n2.split("");
-      
-      // Cancel matches
-      for(let i=0; i<a.length; i++) {
-        const idx = b.indexOf(a[i]);
-        if(idx !== -1) {
-          a[i] = "";
-          b[idx] = "";
+      for (let i = 0; i < nameA.length; i++) {
+        const ch = nameA[i];
+        const idx = nameB.indexOf(ch);
+        if (idx !== -1) {
+          nameA[i] = "";
+          nameB[idx] = "";
         }
       }
-      
-      const count = a.join("").length + b.join("").length;
-      if (count === 0) return "S";
 
-      const arr = ["F", "L", "A", "M", "E", "S"];
-      let idx = 0;
-      let steps = count;
-      let workingArr = [...arr];
-
-      while (workingArr.length > 1) {
-        idx = (idx + steps - 1) % workingArr.length;
-        workingArr.splice(idx, 1);
-      }
-      return workingArr[0];
+      const remainingA = nameA.join("").replace(/ /g, "");
+      const remainingB = nameB.join("").replace(/ /g, "");
+      return remainingA.length + remainingB.length;
     }
 
-    // --- VEDIC LOGIC (H=5) ---
+    function runFlames(name1, name2) {
+      const clean1 = normalizeName(name1);
+      const clean2 = normalizeName(name2);
+
+      if (!clean1 || !clean2) {
+        throw new Error("Please enter two valid names with at least one letter each.");
+      }
+
+      const remainingCount = countUniqueLetters(clean1, clean2);
+
+      if (remainingCount === 0) {
+        return "S";
+      }
+
+      const flames = ["F", "L", "A", "M", "E", "S"];
+      let idx = 0;
+      let count = remainingCount;
+
+      const arr = [...flames];
+      while (arr.length > 1) {
+        idx = (idx + count - 1) % arr.length;
+        arr.splice(idx, 1);
+      }
+
+      return arr[0];
+    }
+
+    // VEDIC LOGIC
     function getVedicSum(name) {
+      const clean = normalizeName(name);
       let sum = 0;
-      for (let char of name) {
+      for (let char of clean) {
         if (VEDIC_MAP[char]) sum += VEDIC_MAP[char];
       }
       while (sum > 9) {
@@ -495,9 +881,16 @@
       return sum;
     }
 
-    function runVedic(n1, n2) {
-      const v1 = getVedicSum(n1);
-      const v2 = getVedicSum(n2);
+    function runVedic(name1, name2) {
+      const clean1 = normalizeName(name1);
+      const clean2 = normalizeName(name2);
+
+      if (!clean1 || !clean2) {
+        throw new Error("Please enter two valid names with at least one letter each.");
+      }
+
+      const v1 = getVedicSum(name1);
+      const v2 = getVedicSum(name2);
       let total = v1 + v2;
       while (total > 9) {
         total = String(total).split('').reduce((a,b) => parseInt(a)+parseInt(b), 0);
@@ -505,99 +898,173 @@
       return total;
     }
 
-    // --- 4. EVENT HANDLERS ---
-
-    // Update hint text based on selection
-    modeSelect.addEventListener("change", function() {
-      if (this.value === 'flames') {
-        modeHint.textContent = "Uses classic letter-crossing logic for a fun match.";
-      } else {
-        modeHint.innerHTML = "Uses the <strong>Chaldean (Vedic)</strong> system.<br>Favoured by Indian Astrologers (e.g. H=5).";
-      }
-    });
-
-    // Run Match
-    matchBtn.addEventListener("click", function() {
-      const raw1 = name1Input.value;
-      const raw2 = name2Input.value;
-      const clean1 = normalize(raw1);
-      const clean2 = normalize(raw2);
-      const mode = modeSelect.value;
-
-      errorEl.textContent = "";
-
-      if (!clean1 || !clean2) {
-        errorEl.textContent = "Please enter two valid names.";
-        return;
-      }
-
-      // 1. Reset Animation
-      resultShell.classList.remove("reveal");
+    function createConfetti() {
+      const emojis = ["🎉", "✨", "🔥", "❤️", "💫", "⭐", "🌟"];
       
-      // 2. Process Result
-      setTimeout(() => {
-        resultShell.classList.add("reveal");
-        createConfetti();
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.animationDelay = Math.random() * 0.3 + "s";
+        confetti.style.animationDuration = Math.random() * 2 + 2 + "s";
+        
+        confettiContainer.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 3500);
+      }
+    }
 
-        if (mode === 'flames') {
-          // Show FLAMES
-          flamesView.style.display = "block";
-          vedicView.style.display = "none";
-          
-          const letter = runFlames(clean1, clean2);
-          const data = FLAMES_MAP[letter];
-          
-          flameLetterEl.textContent = letter;
-          resultLabel.textContent = data.label;
-          resultDetail.textContent = data.detail;
-          
-          tagsRow.innerHTML = "";
-          data.tags.forEach(t => {
-            tagsRow.innerHTML += `<span class="tag">${t}</span>`;
-          });
+    function renderFlamesResult(letter, rawName1, rawName2) {
+      const def = FLAMES_MAP[letter] || FLAMES_MAP["F"];
 
-        } else {
-          // Show Vedic
-          flamesView.style.display = "none";
-          vedicView.style.display = "block";
-          
-          const number = runVedic(clean1, clean2);
-          const data = VEDIC_MEANINGS[number];
-          
-          vedicNumberEl.textContent = number;
-          planetIconEl.textContent = data.planet;
-          resultLabel.textContent = data.label;
-          resultDetail.textContent = data.detail;
-          
-          tagsRow.innerHTML = "";
-          data.tags.forEach(t => {
-            tagsRow.innerHTML += `<span class="tag">${t}</span>`;
-          });
-        }
-      }, 50);
-    });
+      flamesView.style.display = "block";
+      vedicView.style.display = "none";
 
-    // Reset UI
-    resetBtn.addEventListener("click", function() {
+      flameLetterEl.textContent = letter;
+      relationshipLabelEl.textContent = def.label;
+      relationshipDetailEl.textContent = def.detail;
+
+      const pretty1 = rawName1.trim() || "Name one";
+      const pretty2 = rawName2.trim() || "Name two";
+      badgeTextEl.textContent = pretty1 + " × " + pretty2;
+
+      tagsRowEl.innerHTML = "";
+      def.tags.forEach(function(tag) {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag;
+        tagsRowEl.appendChild(span);
+      });
+
+      const base = document.createElement("span");
+      base.className = "tag";
+      base.textContent = "classic FLAMES";
+      tagsRowEl.appendChild(base);
+    }
+
+    function renderVedicResult(number, rawName1, rawName2) {
+      const def = VEDIC_MEANINGS[number];
+
+      flamesView.style.display = "none";
+      vedicView.style.display = "block";
+
+      vedicNumberEl.textContent = number;
+      planetIconEl.textContent = def.planet;
+      relationshipLabelEl.textContent = def.label;
+      relationshipDetailEl.textContent = def.detail;
+
+      tagsRowEl.innerHTML = "";
+      def.tags.forEach(function(tag) {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag;
+        tagsRowEl.appendChild(span);
+      });
+
+      const base = document.createElement("span");
+      base.className = "tag";
+      base.textContent = "Vedic System";
+      tagsRowEl.appendChild(base);
+    }
+
+    function resetUI() {
       name1Input.value = "";
       name2Input.value = "";
       errorEl.textContent = "";
+
       resultShell.classList.remove("reveal");
-      resultLabel.textContent = "Waiting...";
-      resultDetail.textContent = "Select a mode, enter names, and click Reveal.";
-      tagsRow.innerHTML = '<span class="tag">Ready</span>';
+
+      flamesView.style.display = "block";
+      vedicView.style.display = "none";
+
+      flameLetterEl.textContent = "–";
+      badgeTextEl.textContent = "Waiting for names";
+      relationshipLabelEl.textContent = "No match yet";
+      relationshipDetailEl.textContent = "Type two names and hit \"Run Match\" to see what the system says.";
+
+      tagsRowEl.innerHTML = "";
+      const t1 = document.createElement("span");
+      t1.className = "tag";
+      t1.textContent = "nostalgia mode";
+      const t2 = document.createElement("span");
+      t2.className = "tag";
+      t2.textContent = "school desk game";
+      tagsRowEl.appendChild(t1);
+      tagsRowEl.appendChild(t2);
+    }
+
+    // MODE CHANGE
+    modeSelect.addEventListener("change", function() {
+      const mode = this.value;
+      if (mode === "flames") {
+        modeHint.textContent = "Uses the classic letter-crossing FLAMES logic for a just-for-fun match.";
+        howItWorks.innerHTML = `
+          <strong>How Classic FLAMES works:</strong>
+          <ul>
+            <li>Strip spaces and cancel shared letters in both names.</li>
+            <li>Count the leftover letters.</li>
+            <li>Use that count to pick one letter from F-L-A-M-E-S.</li>
+          </ul>
+        `;
+      } else {
+        modeHint.innerHTML = 'Uses the <strong>Chaldean (Vedic)</strong> system favoured by Indian Astrologers.';
+        howItWorks.innerHTML = `
+          <strong>How Vedic Numerology works:</strong>
+          <ul>
+            <li>Assign numbers to letters (e.g. H=5, based on sound vibration).</li>
+            <li>Sum and reduce each name to a single digit (1-9).</li>
+            <li>Combine both numbers to reveal the planetary relationship.</li>
+          </ul>
+        `;
+      }
     });
 
-    // Enter Key Support
+    // RUN MATCH
+    matchBtn.addEventListener("click", function() {
+      errorEl.textContent = "";
+      try {
+        const raw1 = name1Input.value;
+        const raw2 = name2Input.value;
+        const mode = modeSelect.value;
+
+        resultShell.classList.remove("reveal");
+
+        if (mode === "flames") {
+          const letter = runFlames(raw1, raw2);
+          setTimeout(() => {
+            createConfetti();
+            renderFlamesResult(letter, raw1, raw2);
+            resultShell.classList.add("reveal");
+          }, 50);
+        } else {
+          const number = runVedic(raw1, raw2);
+          setTimeout(() => {
+            createConfetti();
+            renderVedicResult(number, raw1, raw2);
+            resultShell.classList.add("reveal");
+          }, 50);
+        }
+        
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong. Try again.";
+      }
+    });
+
+    resetBtn.addEventListener("click", resetUI);
+
     [name1Input, name2Input].forEach(function(input, index) {
       input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
           e.preventDefault();
-          if (index === 0) name2Input.focus();
-          else matchBtn.click();
+          if (index === 0) {
+            name2Input.focus();
+          } else {
+            matchBtn.click();
+          }
         }
       });
     });
-</script>
+  </script>
 </body>
 </html>
